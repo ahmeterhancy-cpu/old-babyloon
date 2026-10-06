@@ -132,7 +132,6 @@ $today      = (int) date('N');
 <footer class="qrftr">
   <p class="qrftr__note"><?= e(setting_t('menu_note', t('menu.allergen_note'))) ?></p>
   <p class="qrftr__note"><?= e(t('qr.call_waiter')) ?></p>
-  <p class="qrftr__note"><?= e(t('menu.photo_note')) ?></p>
   <div class="qrftr__actions">
     <?php if (setting('phone')): ?>
     <a class="qrbtn" href="tel:<?= e(preg_replace('~[^0-9+]~', '', setting('phone'))) ?>">
