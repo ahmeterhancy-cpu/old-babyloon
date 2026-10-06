@@ -121,6 +121,7 @@ return [
     'gallery.empty'     => 'Gallery coming soon.',
     'gallery.count'      => '{n} shots from our menu. Tap to enlarge.',
     'gallery.meta'       => 'Photos from the Old Babyloon kitchen: Babil İskender, burgers, fajitas, breakfast, desserts and drinks.',
+    'menu.enlarge_photo' => 'Enlarge photo: {n}',
     'gallery.open_photo' => 'Open photo {n} of {t}',
 
     /* Blog */

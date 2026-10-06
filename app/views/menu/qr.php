@@ -87,7 +87,11 @@ $today      = (int) date('N');
                  patates) görünüyordu; onlar kırpılmadan sığdırılır. */
               $sz = @getimagesize(OB_ROOT . '/' . $it['image']);
               $wide = $sz && $sz[1] > 0 && $sz[0] / $sz[1] > 2; ?>
-        <?= img_responsive($it['image'], ['class' => 'qritem__ph' . ($wide ? ' qritem__ph--wide' : ''), 'alt' => '', 'loading' => 'lazy'], '84px') ?>
+        <a class="qritem__zoom" href="<?= e(asset($it['image'])) ?>" data-lightbox
+           data-cap="<?= e(tr_col($it, 'name')) ?>"
+           aria-label="<?= e(t('menu.enlarge_photo', ['n' => tr_col($it, 'name')])) ?>">
+          <?= img_responsive($it['image'], ['class' => 'qritem__ph' . ($wide ? ' qritem__ph--wide' : ''), 'alt' => '', 'loading' => 'lazy'], '84px') ?>
+        </a>
         <?php endif; ?>
         <div class="qritem__b">
           <div class="qritem__top">

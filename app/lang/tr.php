@@ -121,6 +121,7 @@ return [
     'gallery.empty'     => 'Galeri yakında.',
     'gallery.count'      => 'Menümüzden {n} kare. Büyütmek için dokunun.',
     'gallery.meta'       => 'Old Babyloon mutfağından fotoğraflar: Babil İskender, burgerler, fajitalar, kahvaltı, tatlılar ve içecekler.',
+    'menu.enlarge_photo' => 'Fotoğrafı büyüt: {n}',
     'gallery.open_photo' => 'Fotoğrafı büyüt ({n} / {t})',
 
     /* Blog */

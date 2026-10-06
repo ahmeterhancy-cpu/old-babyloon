@@ -244,6 +244,53 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 600; margin: 0; line-he
 .qritem__ph { width: 84px; height: 63px; border-radius: 10px; object-fit: cover; flex: none; background: var(--cream); }
 /* Çok geniş tabak: kırpmadan sığdır, boşluk koyu zeminle dolsun */
 .qritem__ph--wide { object-fit: contain; background: #12100C; }
+/* Fotoğrafa dokununca ışık kutusunda büyür */
+.qritem__zoom { flex: none; display: block; border-radius: 10px; cursor: zoom-in; }
+.qritem__zoom:focus-visible { outline: 2px solid var(--ink, #12100C); outline-offset: 2px; }
+.qritem__zoom .qritem__ph { display: block; }
+
+/* --- Işık kutusu (app.js) — renkler temadan bağımsız, hep koyu zemin --- */
+.lightbox {
+  position: fixed; inset: 0; z-index: 300; background: rgba(18, 16, 12, .95);
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center;
+  gap: clamp(.5rem, 2vw, 1.5rem); padding: clamp(1rem, 4vw, 2.5rem);
+  animation: lbfade .25s var(--ease);
+}
+.lightbox[hidden] { display: none; }
+@keyframes lbfade { from { opacity: 0; } }
+.lightbox__fig { margin: 0; display: grid; justify-items: center; gap: .9rem; min-width: 0; }
+/* Kare çerçeve; geniş tabak fotoğrafı kırpılmaz, boşluk koyu zeminle dolar */
+.lightbox img {
+  width: min(78vh, 100%); height: auto; aspect-ratio: 1 / 1;
+  border-radius: 10px; object-fit: contain; display: block; background: #0A0907;
+}
+.lightbox__cap { display: grid; gap: .3rem; text-align: center; }
+.lightbox__cap[hidden] { display: none; }
+.lightbox__t { color: #F2EEE3; font-size: 1rem; font-weight: 600; }
+.lightbox__n { color: rgba(242, 238, 227, .55); font: 600 .78rem/1 var(--f-body); letter-spacing: .1em; }
+.lightbox__x, .lightbox__nav {
+  border-radius: 50%; border: 1px solid rgba(242, 238, 227, .28); background: none;
+  color: #F2EEE3; cursor: pointer; flex: none;
+}
+.lightbox__x {
+  position: absolute; top: 1rem; right: 1rem; z-index: 2;
+  width: 48px; height: 48px; font-size: 1.6rem; line-height: 1;
+}
+.lightbox__nav { width: 52px; height: 52px; position: relative; }
+.lightbox__nav[hidden] { display: none; }
+.lightbox__nav::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  width: 12px; height: 12px; border-left: 2px solid currentColor; border-bottom: 2px solid currentColor;
+}
+.lightbox__nav--prev::before { transform: translate(-40%, -50%) rotate(45deg); }
+.lightbox__nav--next::before { transform: translate(-60%, -50%) rotate(-135deg); }
+@media (max-width: 640px) {
+  .lightbox { grid-template-columns: 1fr; padding: 1rem; }
+  .lightbox__nav { position: absolute; top: 50%; transform: translateY(-50%); z-index: 2; background: rgba(18, 16, 12, .55); }
+  .lightbox__nav--prev { left: .6rem; }
+  .lightbox__nav--next { right: .6rem; }
+  .lightbox img { width: min(68vh, 100%); }
+}
 .qritem__b { flex: 1; min-width: 0; }
 .qritem__top { display: flex; align-items: baseline; gap: .6rem; justify-content: space-between; }
 .qritem__top h3 { font-size: 1.06rem; min-width: 0; overflow-wrap: anywhere; }

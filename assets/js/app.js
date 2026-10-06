@@ -119,14 +119,24 @@
      çekilmezdi.
 
      Kutu bir kez kurulur, her açılışta yeniden kullanılır. Komşu
-     fotoğraflar önden indirilir ki geçiş beklemesin. */
+     fotoğraflar önden indirilir ki geçiş beklemesin. QR menüde de
+     kullanılır; oradaki arama kodunda zaten bir `items` var, ad çakışmasın. */
   var galleryLinks = Array.prototype.slice.call(document.querySelectorAll('[data-lightbox]'));
 
   if (galleryLinks.length) {
-    var items = galleryLinks.map(function (a) {
-      var im = a.querySelector('img');
-      return { src: a.getAttribute('href'), cap: (im && im.getAttribute('alt')) || '' };
-    });
+    /* QR menüde arama ürünleri gizler; gezinme yalnız görünenler arasında
+       olsun diye liste her açılışta yeniden kurulur. */
+    var kareler = [];
+    function listele() {
+      return galleryLinks.filter(function (a) { return a.offsetParent !== null; });
+    }
+    function ogeler(linkler) {
+      return linkler.map(function (a) {
+        var im = a.querySelector('img');
+        return { src: a.getAttribute('href'),
+                 cap: a.getAttribute('data-cap') || (im && im.getAttribute('alt')) || '' };
+      });
+    }
 
     var box = null, img = null, cap = null, sayac = null, prevBtn = null, nextBtn = null;
     var index = 0, oncekiOdak = null;
@@ -181,26 +191,26 @@
     /** Komşuları önden indir — geçiş anında beklenmesin. */
     function onYukle(i) {
       [i - 1, i + 1].forEach(function (k) {
-        var it = items[(k + items.length) % items.length];
+        var it = kareler[(k + kareler.length) % kareler.length];
         if (it) { var p = new Image(); p.src = it.src; }
       });
     }
 
     function ciz() {
-      var it = items[index];
+      var it = kareler[index];
       img.src = it.src;
       img.alt = it.cap;
       cap.textContent = it.cap;
       cap.hidden = it.cap === '';
-      sayac.textContent = (index + 1) + ' / ' + items.length;
+      sayac.textContent = (index + 1) + ' / ' + kareler.length;
       // Tek fotoğraf varsa gezinmeye gerek yok
-      var cok = items.length > 1;
+      var cok = kareler.length > 1;
       prevBtn.hidden = nextBtn.hidden = !cok;
       onYukle(index);
     }
 
     function git(yon) {
-      index = (index + yon + items.length) % items.length;
+      index = (index + yon + kareler.length) % kareler.length;
       ciz();
     }
 
@@ -221,10 +231,12 @@
       if (oncekiOdak && oncekiOdak.focus) { oncekiOdak.focus(); }
     }
 
-    galleryLinks.forEach(function (link, i) {
+    galleryLinks.forEach(function (link) {
       link.addEventListener('click', function (ev) {
         ev.preventDefault();
-        ac(i);
+        var gorunen = listele();
+        kareler = ogeler(gorunen);
+        ac(Math.max(0, gorunen.indexOf(link)));
       });
     });
 
