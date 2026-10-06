@@ -167,6 +167,9 @@ return [
         'Süt' => 'uploads/menu/icecek-sut.jpg', // c6TKtsi8C1k
         'Demleme Organik Yeşil Çay' => 'uploads/menu/icecek-demleme-organik-yesil-cay.jpg', // 3hRRT4qztzs
         'Demleme Ada Çayı' => 'uploads/menu/icecek-demleme-ada-cayi.jpg', // G3Y8KVjpl1M
+        'Muz Çayı' => 'uploads/menu/icecek-muz-cayi.jpg', // Yjap_rAjifE
+        'Kivi Çayı' => 'uploads/menu/icecek-kivi-cayi.jpg', // Rd_cmQWnCaM
+        'Süvari Kahve' => 'uploads/menu/icecek-suvari-kahve.jpg', // maO-qIKLqi8
     ],
     'gallery' => [
         ['uploads/gallery/p08-1.jpg', 'Babil İskender'],

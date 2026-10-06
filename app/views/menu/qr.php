@@ -71,7 +71,10 @@ $today      = (int) date('N');
       <?php foreach ($items as $it): ?>
       <?php $g = tr_col($it, 'group'); ?>
       <?php if ($g !== $group && $g !== ''): ?>
-      <li class="qrsub" data-item="<?= e($g) ?>"><?= e($g) ?></li>
+      <?php /* Alt başlık iki dilde aynıysa (Fruit Chillers, Bubble Tea…) İngilizcedir;
+               Türkçe sayfada büyük harfe çevrilirken "FRUİT" olmasın diye dili belirtilir. */
+            $gEn = $loc !== 'en' && (string) ($it['group_tr'] ?? '') === (string) ($it['group_en'] ?? ''); ?>
+      <li class="qrsub"<?= $gEn ? ' lang="en"' : '' ?> data-item="<?= e($g) ?>"><?= e($g) ?></li>
       <?php endif; ?>
       <?php $group = $g; ?>
       <?php
@@ -129,6 +132,7 @@ $today      = (int) date('N');
 <footer class="qrftr">
   <p class="qrftr__note"><?= e(setting_t('menu_note', t('menu.allergen_note'))) ?></p>
   <p class="qrftr__note"><?= e(t('qr.call_waiter')) ?></p>
+  <p class="qrftr__note"><?= e(t('menu.photo_note')) ?></p>
   <div class="qrftr__actions">
     <?php if (setting('phone')): ?>
     <a class="qrbtn" href="tel:<?= e(preg_replace('~[^0-9+]~', '', setting('phone'))) ?>">

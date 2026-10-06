@@ -80,6 +80,7 @@ return [
     'menu.title'        => 'Menü',
     'menu.unavailable'  => 'Tükendi',
     'menu.download_qr'  => 'QR menüyü aç',
+    'menu.photo_note'   => 'Ürün görselleri temsilîdir.',
     'menu.allergen_note'=> 'Alerjenler için lütfen ekibimize danışın.',
 
     /* Menü kitapçığı */

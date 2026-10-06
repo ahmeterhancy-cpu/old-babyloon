@@ -899,9 +899,10 @@ html:not(.js) .hero__dots { display: none; }
 @keyframes fade { from { opacity: 0; } }
 
 .lightbox__fig { margin: 0; display: grid; justify-items: center; gap: .9rem; min-width: 0; }
+/* Kare çerçeve; fotoğraf kırpılmaz, boşluk koyu zeminle dolar (QR menüyle aynı) */
 .lightbox img {
-  max-width: 100%; max-height: 80vh; border-radius: var(--r);
-  object-fit: contain; display: block;
+  width: min(78vh, 100%); height: auto; aspect-ratio: 1 / 1; border-radius: var(--r);
+  object-fit: contain; display: block; background: #0A0907;
 }
 .lightbox__cap { display: grid; gap: .3rem; text-align: center; }
 .lightbox__cap[hidden] { display: none; }
@@ -941,7 +942,7 @@ html:not(.js) .hero__dots { display: none; }
                    background: rgba(23, 16, 16, .55); }
   .lightbox__nav--prev { left: .6rem; }
   .lightbox__nav--next { right: .6rem; }
-  .lightbox img { max-height: 70vh; }
+  .lightbox img { width: min(68vh, 100%); }
 }
 
 /* --- 15. Instagram şeridi ------------------------------------------------- */

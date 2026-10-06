@@ -80,6 +80,7 @@ return [
     'menu.title'        => 'Menu',
     'menu.unavailable'  => 'Sold out',
     'menu.download_qr'  => 'Open the QR menu',
+    'menu.photo_note'   => 'Product photos are for illustration only.',
     'menu.allergen_note'=> 'Please ask our team about allergens.',
 
     /* Menu booklet */
