@@ -1,5 +1,13 @@
 # Old Babyloon — cPanel'e Git ile kurulum (oldbabyloon.com)
 
+> **CANLIDA (2026-10-06).** Turhost `srvc197.trwww.com:2083`, kullanıcı `oldb5293`,
+> ana dizin `/home2/oldb5293`, PHP 8.3 (LiteSpeed). Veritabanı ve kullanıcı
+> `oldb5293_babyloon`. SSL: Let's Encrypt `*.oldbabyloon.com` + `oldbabyloon.com`
+> (Turhost kurdu; bitiş 2027-01-04 — yenilemeyi Turhost'un yaptığı izlenmeli).
+> Turhost'un yer tutucuları (`index.php5`, `index.php8`) `~/turhost-varsayilan/`
+> klasörüne taşındı. İlk yönetici şifresi `~/old-babyloon-ilk-giris.txt` içinde
+> (okuyup silin). Canlı Lighthouse (mobil): ana sayfa 96/100/100/100.
+
 Genel tarif: `F:\Yazılımlar\CPANEL-GIT-DEPLOY.md` (Laravel için yazıldı). Bu
 proje çerçevesiz PHP olduğu için çok daha sade: composer, vendor, artisan,
 `.env`, `APP_DIR` yok. Site doğrudan `public_html` içinde çalışır.
@@ -108,7 +116,7 @@ yok (YAML bozulur, cPanel sessizce düşürür, "Last Deployed" donar); mutlak y
 
 ## 5. Kurulumdan sonra kontrol
 
-- [ ] `https://oldbabyloon.com/babyloon-config.php` → **404**
+- [ ] `https://oldbabyloon.com/babyloon-config.php` → **404** (LiteSpeed'de önce 302 → `/tr/…` → 404)
 - [ ] `https://oldbabyloon.com/app/config.php` → **403/404**
 - [ ] `https://oldbabyloon.com/migrate.php` → **404**
 - [ ] `http://` ve `www.` → `https://oldbabyloon.com` (301)
@@ -126,3 +134,5 @@ yok (YAML bozulur, cPanel sessizce düşürür, "Last Deployed" donar); mutlak y
 | "Veritabanına bağlanılamadı" | `host` = `localhost`, kullanıcı veritabanına eklenmemiş |
 | Site açılmıyor, tarayıcı SSL hatası | Sertifika yok — AutoSSL / Let's Encrypt (www dahil) |
 | Görseller büyük iniyor | GD/WebP yok → türev üretilmedi; günlükte `0 türev` |
+| Günlükte `PHP Warning ... imap.so` | Sunucunun PHP komut satırı ayarı; zararsız, siteyi etkilemez |
+| Korunan dosya (`babyloon-config.php` vb.) 404 yerine 302 veriyor | LiteSpeed `RedirectMatch`'i uygulamadan uygulamaya bırakıyor; sonuç uygulamanın 404 sayfası, dosya çalışmaz/sızmaz (2026-10-06 doğrulandı) |
