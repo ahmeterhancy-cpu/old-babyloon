@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="">
+  <rect width="800" height="1000" fill="#EFE7DA"/>
+  <g fill="none" stroke="#3B2A22" stroke-width="3" opacity=".4">
+    <path d="M60 700h680"/>
+    <path d="M110 700V430h580v270"/>
+    <path d="M110 430l290-160 290 160"/>
+    <rect x="180" y="500" width="150" height="120"/>
+    <rect x="470" y="500" width="150" height="200"/>
+    <path d="M180 560h150M255 500v120"/>
+    <circle cx="400" cy="560" r="52"/>
+    <path d="M400 512v96M352 560h96" opacity=".5"/>
+  </g>
+  <g fill="none" stroke="#C9A26B" stroke-width="2">
+    <circle cx="400" cy="330" r="150" opacity=".4"/>
+    <circle cx="400" cy="330" r="110" opacity=".25"/>
+    <path d="M60 780h680M60 830h420" opacity=".5"/>
+  </g>
+  <text x="400" y="900" text-anchor="middle" font-family="Georgia, serif" font-size="26" fill="#8C7663" letter-spacing="6">OLD BABYLOON</text>
+  <text x="400" y="932" text-anchor="middle" font-family="Georgia, serif" font-size="15" fill="#B0A08F" letter-spacing="3">GÖRSEL YER TUTUCU</text>
+</svg>

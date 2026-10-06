@@ -1,0 +1,22 @@
+---
+# Old Babyloon — cPanel Git dağıtımı (oldbabyloon.com)
+# Depo: ~/repositories/old-babyloon  →  site: ~/public_html
+# KURALLAR: her görev tek satır; metinlerde iki nokta + boşluk YOK (YAML bozulur,
+# cPanel sessizce düşürür); mutlak yollar; babyloon-config.php'ye dokunma.
+# Günlük: ~/deploy-son.log (sonunda "=== DEPLOY BITTI ===" olmalı). Ayrıntı: DEPLOY.md
+deployment:
+  tasks:
+    - export WEBROOT=$HOME/public_html
+    - export PHPBIN=$(command -v php || echo /usr/local/bin/php)
+    - export LOG=$HOME/deploy-son.log
+    - date > $LOG 2>&1
+    - /bin/mkdir -p $WEBROOT >> $LOG 2>&1
+    - /bin/cp -a index.php migrate.php .htaccess $WEBROOT/ >> $LOG 2>&1
+    - /bin/cp -a app assets tools uploads $WEBROOT/ >> $LOG 2>&1
+    - test -f $WEBROOT/babyloon-config.php && cd $WEBROOT && $PHPBIN migrate.php >> $LOG 2>&1 || echo "MIGRATE ATLANDI - babyloon-config.php yok" >> $LOG 2>&1
+    - cd $WEBROOT && $PHPBIN tools/responsive-images.php uploads/slider --eksik >> $LOG 2>&1 || true
+    - cd $WEBROOT && $PHPBIN tools/responsive-images.php uploads/gallery --eksik >> $LOG 2>&1 || true
+    - cd $WEBROOT && $PHPBIN tools/responsive-images.php uploads/menu --eksik >> $LOG 2>&1 || true
+    - cd $WEBROOT && $PHPBIN tools/responsive-images.php uploads/menu-book --eksik >> $LOG 2>&1 || true
+    - cd $WEBROOT && $PHPBIN tools/responsive-images.php uploads/misc --eksik >> $LOG 2>&1 || true
+    - echo "=== DEPLOY BITTI ===" >> $LOG 2>&1

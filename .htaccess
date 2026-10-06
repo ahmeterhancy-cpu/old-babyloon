@@ -1,0 +1,74 @@
+# Old Babyloon — Apache yapılandırması (oldbabyloon.com)
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Tek adres: https://oldbabyloon.com — www ve http kalıcı olarak buraya.
+  # www önce: www.oldbabyloon.com tek adımda https + www'suz adrese gider.
+  # (SSL sertifikası kurulmadan açılırsa site açılmaz; Turhost'ta AutoSSL /
+  # Let's Encrypt hem oldbabyloon.com hem www.oldbabyloon.com için kurulmalı.)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^(.*)$ https://%1/$1 [L,R=301]
+
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Var olan dosya ve klasörler doğrudan sunulur
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Geri kalan her istek tek giriş noktasına
+  RewriteRule ^ index.php [L]
+</IfModule>
+
+# Uygulama dosyaları web'e kapalı
+RedirectMatch 404 ^/(app|storage|tools|tests)(/|$)
+RedirectMatch 404 ^/(migrate\.php|router-dev\.php|babyloon-config\.php|babyloon-cacert\.pem)$
+RedirectMatch 404 /\.git
+
+# uploads klasöründe PHP çalıştırmayı engelleme işi uploads/.htaccess'te.
+# Burada <Directory> KULLANILAMAZ: o yönerge yalnızca sunucu yapılandırmasında
+# geçerlidir, .htaccess içinde Apache doğrudan 500 verir.
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>
+
+# Varlıkların adresinde ?v=<dosya tarihi> var; dosya değişince adres de
+# değişiyor. Bu yüzden uzun önbellek güvenli. HTML listede YOK, o her
+# istekte tazelenmeli.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg      "access plus 1 year"
+  ExpiresByType image/png       "access plus 1 year"
+  ExpiresByType image/webp      "access plus 1 year"
+  ExpiresByType image/svg+xml   "access plus 1 year"
+  # Yazı tipleri listede yoktu: 174 KB her ziyarette yeniden iniyordu.
+  ExpiresByType font/woff2      "access plus 1 year"
+  ExpiresByType font/woff       "access plus 1 year"
+  ExpiresByType application/pdf "access plus 1 month"
+  ExpiresByType text/css        "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+</IfModule>
+
+# mod_expires kapalıysa da bir şey olsun
+<IfModule mod_headers.c>
+  <FilesMatch "\.(jpe?g|png|webp|svg|woff2?|css|js)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_dir.c>
+  DirectoryIndex index.php
+</IfModule>
+
+ErrorDocument 404 /index.php

@@ -1,0 +1,325 @@
+/* --- 0. Montserrat — kendi sunucumuzdan --------------------------------
+   Önceden Google Fonts'tan geliyordu: iki ek alan adına bağlantı ve
+   çizimi bekleten bir stil dosyası. Yerelden gelince o istek ortadan
+   kalkıyor. unicode-range sayesinde tarayıcı yalnızca gereken alt
+   kümeyi indirir; Türkçe ğ/ş/İ latin-ext'te olduğu için iki dosya da
+   çoğu sayfada gerekir.
+   ---------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/montserrat-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/montserrat-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/montserrat-500-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/montserrat-500-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/montserrat-600-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/montserrat-600-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/montserrat-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/montserrat-700-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ==========================================================================
+   Old Babyloon — QR menü. Telefonda okunmak için: büyük dokunma alanları,
+   yapışkan kategori şeridi, ışığa göre otomatik koyu tema.
+   ========================================================================== */
+
+:root {
+  /* Logodan: siyah + #FDF001 sarı. Sarı yalnız siyah zeminde ya da siyah
+     yazılı dolguda; açık zeminde vurgu siyahtır. (Adlar Dura iskeletinden.) */
+  --yellow:     #FDF001;
+  --black:      #12100C;
+  --terra:      #12100C;   /* ikon, odak, çizgi */
+  --terra-on:   #12100C;   /* üstünde açık yazı olan yüzey */
+  --terra-text: #12100C;
+  --terra-deep: #000000;
+  --terra-tint: #F1EBC4;
+  --cream:      #F2EEE3;
+  --clay:       #8A7F66;
+  --leaf:       #4F7A3A;
+  --paper:      #FFFFFF;
+  --sand:       #F7F5EE;
+  --ink:        #12100C;
+  --ink-soft:   #3B372E;
+  --muted:      #625D51;
+  --line:       rgba(18, 16, 12, .12);
+  --card:       #FFFFFF;
+  --espresso:   #12100C;
+  --f-display: 'Montserrat', system-ui, sans-serif;
+  --f-body: 'Montserrat', system-ui, -apple-system, sans-serif;
+  --ease: cubic-bezier(.22, .8, .3, 1);
+}
+
+/* Işık az olduğunda okunabilirlik için koyu tema — tabelanın kendisi:
+   siyah zemin, sarı vurgu */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #12100C;
+    --card:  #1D1A14;
+    --sand:  #1D1A14;
+    --ink:   #F4F1E8;
+    --ink-soft: #D5D0C2;
+    --muted: #A8A292;
+    --terra: #FDF001;
+    --terra-text: #FDF001;
+    --terra-tint: #3A3610;
+    --cream: #2A261C;
+    --line:  rgba(244, 241, 232, .14);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scroll-padding-top: 8.5rem;  /* yüzen başlık + yapışkan kategori şeridi kadar */ overflow-x: clip; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1rem/1.55 var(--f-body);
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow-x: clip;
+}
+
+img, svg { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--f-display); font-weight: 600; margin: 0; line-height: 1.15; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+:where(a, button, input):focus-visible { outline: 2px solid var(--terra); outline-offset: 2px; }
+
+/* --- Başlık --------------------------------------------------------------- */
+
+.qrhead {
+  /* Sitedeki gibi: koyu dokulu bant, üstünde yüzen beyaz başlık kartı */
+  background-color: #12100C;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.09'/%3E%3C/svg%3E"),
+    radial-gradient(30rem 16rem at 15% 80%, rgba(253,240,1,.06), transparent 70%);
+  padding: calc(max(.6rem, env(safe-area-inset-top)) + 60px + 1.1rem) 1rem 1rem;
+}
+.qrhead__top {
+  position: fixed; z-index: 30;
+  top: max(.6rem, env(safe-area-inset-top)); left: 50%; translate: -50% 0;
+  width: min(100% - 1.5rem, 48rem); min-height: 60px;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 0 .55rem 0 1rem; background: #ffffff; border-radius: 10px;
+  box-shadow: 0 14px 34px -16px rgba(0,0,0,.55);
+}
+/* Kart her temada beyaz: logo ve diller sabit koyu */
+.qrhead__logo { color: #12100C; display: block; }
+.qrhead__logo .brand { width: 140px; }
+.qrhead .qrsearch { max-width: 46rem; margin: 0 auto; }
+.qrhead .qrsearch input { background: #ffffff; color: #12100C; border-color: transparent; }
+.qrhead .qrsearch .ico { color: #625D51; }
+
+.qrlang { display: flex; gap: .15rem; list-style: none; margin: 0; padding: 0; }
+.qrlang a {
+  display: block; padding: .4rem .6rem; text-decoration: none; border-radius: 100px;
+  font: 700 .72rem/1 var(--f-body); letter-spacing: .1em; color: #625D51;
+}
+.qrlang a[aria-current="true"] { background: var(--yellow); color: var(--black); }
+
+
+
+.qrsearch { position: relative; margin-bottom: .6rem; }
+.qrsearch .ico {
+  position: absolute; left: .85rem; top: 50%; translate: 0 -50%;
+  width: 18px; height: 18px; color: var(--muted); pointer-events: none;
+  fill: none; stroke: currentColor; stroke-width: 1.6;
+}
+.qrsearch input {
+  width: 100%; font: 400 1rem/1.2 var(--f-body); color: var(--ink);
+  padding: .8rem 1rem .8rem 2.6rem;
+  background: var(--card); border: 1px solid var(--line); border-radius: 100px;
+  -webkit-appearance: none;
+}
+.qrsearch input:focus { border-color: var(--terra); outline: none; box-shadow: 0 0 0 3px rgba(253,240,1,.55); }
+
+/* Kategori şeridi ekranın tepesine yapışır — uzun menüde kategoriler
+   her zaman elin altında kalsın diye. Başlık kayıp gider, şerit kalır. */
+.chipbar {
+  /* yüzen başlık kartının hemen altına yapışır */
+  position: sticky; top: calc(max(.6rem, env(safe-area-inset-top)) + 60px + .5rem); z-index: 20;
+  background: color-mix(in srgb, var(--paper) 96%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: .55rem 1rem;
+  display: flex; gap: .4rem; overflow-x: auto; scrollbar-width: none;
+}
+.chipbar::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; text-decoration: none; white-space: nowrap;
+  padding: .5rem .95rem; border-radius: 100px;
+  border: 1px solid var(--line); background: var(--card);
+  font: 600 .8rem/1 var(--f-body); color: var(--muted);
+  transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease);
+}
+.chip.is-on { background: var(--yellow); border-color: var(--yellow); color: var(--black); }
+
+
+/* --- Menü ---------------------------------------------------------------- */
+
+.qrmain { padding: 1.5rem 1rem 2rem; max-width: 46rem; margin-inline: auto; }
+.qrempty { text-align: center; color: var(--muted); padding: 3rem 0; }
+
+.qrgroup { margin-bottom: 2.5rem; scroll-margin-top: 0;  /* konumu html scroll-padding-top belirliyor */ }
+.qrgroup[hidden] { display: none; }
+.qrgroup__h {
+  display: flex; align-items: center; gap: .8rem;
+  padding-bottom: .7rem; margin-bottom: 1rem; border-bottom: 2px solid var(--line);
+}
+.qrgroup__h .ico { width: 30px; height: 30px; flex: none; color: var(--terra); fill: none; stroke: currentColor; stroke-width: 1.3; }
+.qrgroup__h h2 { font-size: 1.4rem; }
+.qrgroup__h p { margin: .15rem 0 0; font-size: .8rem; color: var(--muted); }
+
+.qrlist { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; }
+
+.qritem {
+  display: flex; gap: .9rem; align-items: flex-start;
+  padding: .85rem .1rem; border-bottom: 1px dashed var(--line);
+}
+.qritem[hidden] { display: none; }
+.qritem:last-child { border-bottom: 0; }
+.qritem__ph { width: 84px; height: 63px; border-radius: 10px; object-fit: cover; flex: none; background: var(--cream); }
+/* Çok geniş tabak: kırpmadan sığdır, boşluk koyu zeminle dolsun */
+.qritem__ph--wide { object-fit: contain; background: #12100C; }
+.qritem__b { flex: 1; min-width: 0; }
+.qritem__top { display: flex; align-items: baseline; gap: .6rem; justify-content: space-between; }
+.qritem__top h3 { font-size: 1.06rem; min-width: 0; overflow-wrap: anywhere; }
+.qritem__price {
+  flex: none;
+  font: 600 .95rem/1 var(--f-body); font-variant-numeric: tabular-nums;
+  white-space: nowrap; color: var(--ink);
+}
+.qritem__price i { font-style: normal; opacity: .4; margin: 0 .15rem; }
+.qritem__sizes { margin: .2rem 0 0; font-size: .74rem; color: var(--muted); }
+.qritem__d { margin: .3rem 0 0; font-size: .88rem; color: var(--muted); }
+.qritem.is-out { opacity: .48; }
+.qritem.is-out .qritem__price { text-decoration: line-through; }
+
+.tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .45rem; }
+.tag {
+  font: 700 .62rem/1 var(--f-body); letter-spacing: .08em; text-transform: uppercase;
+  padding: .3rem .5rem; border-radius: 100px;
+  border: 1px solid var(--line); color: var(--muted); background: var(--card);
+}
+/* Beyaz zeminde 4,33 ve 4,14 kalıyorlardı; tonu koruyup AA'ya çekildi. */
+.tag--vegan, .tag--vejetaryen { color: #6b7c5a; border-color: rgba(110,127,92,.4); }
+.tag--yeni { color: var(--black); background: var(--yellow); border-color: var(--yellow); }
+.tag--sef { color: #ffffff; background: var(--terra-on); border-color: var(--terra-on); }
+.tag--out { color: #fff; background: #B4736A; border-color: #B4736A; }
+
+/* --- Alt bilgi ----------------------------------------------------------- */
+
+.qrftr {
+  /* saydam beyaz terracottada AA altında kalıyor */
+  background: var(--terra-on); color: #ffffff;
+  padding: 2rem 1rem calc(2rem + env(safe-area-inset-bottom));
+  text-align: center;
+}
+.qrftr__note { margin: 0 0 .5rem; font-size: .85rem; }
+.qrftr__actions { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin: 1.25rem 0 1rem; }
+.qrbtn {
+  display: inline-flex; align-items: center; gap: .45rem;
+  padding: .7rem 1.15rem; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,.4); text-decoration: none;
+  /* krem (#f0e1c6) terracotta üstünde 3,4:1 kalıyordu */
+  font: 600 .82rem/1 var(--f-body); color: #ffffff;
+}
+.qrbtn .ico { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.qrbtn:active { background: var(--yellow); color: var(--black); border-color: var(--yellow); }
+.qrftr__brand { margin: 0; font-size: .76rem; color: #ffffff; }
+
+.qrtop {
+  position: fixed; right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom));
+  width: 44px; height: 44px; border-radius: 50%; z-index: 15;
+  background: var(--terra-on); color: #ffffff;
+  display: grid; place-items: center; text-decoration: none; font-size: 1.1rem;
+  box-shadow: 0 8px 24px -10px rgba(18,16,12,.7);
+  opacity: .85;
+}
+
+
+
+/* --- Başlık arka şeridi -------------------------------------------------- */
+.qrhead { position: relative; }
+/* Kaydırınca yüzen kartın çevresinden menü görünmesin: tepede sabit koyu şerit
+   (sayfanın en üstünde banttan ayırt edilmez) */
+.qrhead::before {
+  content: ''; position: fixed; left: 0; right: 0; top: 0; z-index: 25;
+  height: calc(max(.6rem, env(safe-area-inset-top)) + 60px + .5rem);
+  background: #12100C;
+}
+
+/* Kategori içi alt başlık */
+.qrsub {
+  list-style: none; border: 0; padding: 1.1rem 0 .35rem;
+  font: 700 .74rem/1 var(--f-body); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--terra-text);
+}
+.qrsub[hidden] { display: none; }
+/* Ajans imzası — sitenin altbilgisindekiyle aynı, koyu zemine göre */
+.qrftr__made { margin: .55rem 0 0; font-size: .72rem; color: #ffffff; }
+.qrftr__made a { color: #ffffff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.5); }
+.qrftr__made a:hover { color: #ffffff; border-color: #ffffff; }

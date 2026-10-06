@@ -1,0 +1,28 @@
+# Yerel veritabanı ve çalışma dosyaları
+/storage/*.sqlite
+/storage/*.sqlite-shm
+/storage/*.sqlite-wal
+/storage/*.lock
+
+# Sunucuya özel yapılandırma (asla depoya girmez)
+/babyloon-config.php
+/babyloon-cacert.pem
+
+# Yüklenen dosyalar — müşterinin kendi içeriği
+# (Başlangıç fotoğrafları depoda tutulur; yeni yüklemeler yoksayılır.)
+/uploads/instagram/*
+!/uploads/instagram/.gitkeep
+
+# Editör / işletim sistemi
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Duyarlı görsel türevleri — tools/responsive-images.php ile üretilir
+/uploads/**/*@*.jpg
+/uploads/**/*@*.webp
+
+# Üretilen dağıtım paketleri
+/oldbabyloon.zip

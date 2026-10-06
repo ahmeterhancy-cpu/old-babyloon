@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" role="img" aria-label="">
+  <rect width="900" height="600" fill="#EFE7DA"/>
+  <g fill="none" stroke="#C9A26B" stroke-width="1.5">
+    <circle cx="450" cy="300" r="210" opacity=".35"/>
+    <circle cx="450" cy="300" r="160" opacity=".25"/>
+    <circle cx="450" cy="300" r="110" opacity=".15"/>
+  </g>
+  <g fill="none" stroke="#3B2A22" stroke-width="4" stroke-linecap="round" opacity=".45">
+    <path d="M370 250h160l-56 80h-48z"/>
+    <path d="M450 330v46"/>
+    <path d="M414 400h72a36 36 0 0 0-72 0z"/>
+    <path d="M450 210v26"/>
+  </g>
+  <text x="450" y="540" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#A8977F" letter-spacing="5">GÖRSEL YER TUTUCU</text>
+</svg>

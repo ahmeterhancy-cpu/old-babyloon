@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="">
+  <rect width="800" height="1000" fill="#EFE7DA"/>
+  <g stroke="#C9A26B" stroke-width="1" opacity=".45">
+    <path d="M0 120h800M0 300h800M0 480h800M0 660h800M0 840h800"/>
+    <path d="M150 0v1000M330 0v1000M510 0v1000M690 0v1000"/>
+  </g>
+  <path d="M0 420 L230 400 L430 520 L620 470 L800 560" fill="none" stroke="#6B7A55" stroke-width="6" opacity=".5"/>
+  <path d="M330 0 L360 300 L300 640 L340 1000" fill="none" stroke="#3B2A22" stroke-width="8" opacity=".28"/>
+  <g transform="translate(400 470)">
+    <path d="M0 60s34-33 34-58A34 34 0 1 0-34 2C-34 27 0 60 0 60z" fill="#221815"/>
+    <circle cy="2" r="12" fill="#E3B45F"/>
+  </g>
+  <text x="400" y="900" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#A8977F" letter-spacing="4">HARİTA YER TUTUCU</text>
+</svg>

@@ -1,0 +1,21 @@
+# Yüklenen dosyalar yalnızca statik olarak sunulur; kod çalıştırılamaz.
+<FilesMatch "\.(php|phtml|php[0-9]|phar|cgi|pl|py|sh|htaccess)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+# php_flag yalnızca mod_php varken tanınır. Turhost gibi LiteSpeed ya da
+# PHP-FPM kullanan sunucularda bilinmeyen yönergedir ve 500 hatası verir;
+# bu yüzden modül denetimine sarıldı. Zaten asıl korumayı yukarıdaki
+# FilesMatch sağlıyor.
+<IfModule mod_php.c>
+  php_flag engine off
+</IfModule>
+<IfModule mod_php7.c>
+  php_flag engine off
+</IfModule>

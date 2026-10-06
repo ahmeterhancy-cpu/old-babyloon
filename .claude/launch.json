@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "babyloon",
+      "runtimeExecutable": "php",
+      "runtimeArgs": ["-S", "localhost:8145", "-t", ".", "router-dev.php"],
+      "port": 8145
+    }
+  ]
+}
