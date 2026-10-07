@@ -84,7 +84,7 @@ function ob_seed(): void
             'currency'          => '₺',
             'currency_position' => 'after',
             'ig_enabled'        => '0',
-            'hours_confirmed'   => '0',   // saatler yer tutucu; doğrulanınca panelden işaretlenir
+            'hours_confirmed'   => '1',   // 09:00–01:00 işletmeden teyitli (2026-10-07)
             'ig_limit'          => '12',
         ];
 
@@ -92,18 +92,24 @@ function ob_seed(): void
     }
 
     /* ---- Çalışma saatleri -----------------------------------------------
-     * YER TUTUCU: gerçek saatler teyit edilip panelden girilmeli.
-     * Yedi satır burada oluşuyor ki panel ekranı boş açılmasın.
+     * İşletmeden teyitli (2026-10-07): her gün 09:00–01:00 (gece yarısını aşar).
+     * Sonrasında panel esastır.
      */
     if (!DB::value('SELECT COUNT(*) FROM hours')) {
         for ($d = 1; $d <= 7; $d++) {
             DB::insert('hours', [
                 'day_no'     => $d,
                 'open_time'  => '09:00',
-                'close_time' => '23:00',
+                'close_time' => '01:00',
                 'is_closed'  => 0,
             ]);
         }
+    }
+    // Eski kurulumdaki 09:00–23:00 yer tutucusu gerçek saatle değişir. Panelde
+    // elle değiştirilmiş saate dokunulmaz; yalnız yer tutucu satırlar güncellenir.
+    if ((int) DB::value("SELECT COUNT(*) FROM hours WHERE open_time = '09:00' AND close_time = '23:00' AND is_closed = 0") === 7) {
+        DB::run("UPDATE hours SET close_time = '01:00'");
+        DB::run("UPDATE settings SET v = '1' WHERE k = 'hours_confirmed'");
     }
 
     /* ---- Menü (QR menü) -------------------------------------------------

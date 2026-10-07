@@ -81,8 +81,7 @@ if (!ob_has_posts()) { $nav = array_values(array_filter($nav, fn($n) => $n[0] !=
         : null,
     'priceRange' => '₺₺',
     'sameAs'     => array_values(array_filter([setting('instagram'), setting('facebook')])),
-    /* Saatler panelde "doğrulandı" işaretlenmeden Google'a gitmez —
-       kurulumdaki 09:00–23:00 yer tutucudur. */
+    /* Saatler panelde "doğrulandı" işaretli değilse Google'a gitmez. */
     'openingHoursSpecification' => setting('hours_confirmed') !== '1' ? null : array_values(array_filter(array_map(
         function (array $h): ?array {
             if ((int) $h['is_closed'] === 1) { return null; }
