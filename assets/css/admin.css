@@ -581,3 +581,23 @@ body.adm--login { display: grid; place-items: center; min-height: 100vh; backgro
   .col-act .mini { padding: .5rem .9rem; }
   .pickbar { bottom: .5rem; }
 }
+
+/* Galeri: toplu yükleme */
+.bulkup__drop {
+  display: grid; place-items: center; gap: .3rem; text-align: center; cursor: pointer;
+  padding: 2.4rem 1rem; border: 2px dashed var(--line); border-radius: 12px; background: var(--card);
+  transition: border-color .2s, background .2s;
+}
+.bulkup__drop:hover, .bulkup__drop.is-over { border-color: var(--espresso); background: #FFFCE0; }
+.bulkup__drop { position: relative; }
+.bulkup__drop input { width: 100%; max-width: 320px; }
+.bulkup__drop.is-enhanced input { position: absolute; inset: 0; opacity: 0; max-width: none; cursor: pointer; }
+.bulkup__drop:focus-within { outline: 2px solid var(--espresso); outline-offset: 2px; }
+.bulkup__drop b { font-size: 1.05rem; }
+.bulkup__drop span { color: var(--muted); font-size: .88rem; }
+.bulkup__list { list-style: none; margin: 0; padding: 0; display: grid; gap: .3rem; font-size: .88rem; max-height: 320px; overflow: auto; }
+.bulkup__list li { padding: .45rem .7rem; border: 1px solid var(--line); border-radius: 8px; background: var(--card); overflow-wrap: anywhere; }
+.bulkup__list li.is-busy { border-color: var(--yellow-d); }
+.bulkup__list li.is-ok { border-color: #9BC59D; color: #2E6B33; }
+.bulkup__list li.is-err { border-color: #E3A8A1; color: var(--danger); }
+.bulkup__status { font-weight: 600; margin: 0; display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }

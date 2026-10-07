@@ -152,4 +152,90 @@
 
     sync();
   }
+  /* --- Galeri: toplu yükleme --------------------------------------------
+     Dosyalar tek tek gönderilir: sunucunun POST boyutu ve dosya sayısı
+     sınırına takılmaz, her fotoğrafın durumu ayrı görünür. JS kapalıysa
+     form hepsini birden normal yoldan gönderir. */
+  var bulk = document.querySelector('[data-bulk-upload]');
+  if (bulk) {
+    var input  = bulk.querySelector('[data-bulk-input]');
+    var drop   = bulk.querySelector('[data-bulk-drop]');
+    var list   = bulk.querySelector('[data-bulk-list]');
+    var status = bulk.querySelector('[data-bulk-status]');
+    var submit = bulk.querySelector('[data-bulk-submit]');
+    var max    = parseInt(bulk.dataset.max, 10) || 0;
+    var picked = [];
+    drop.classList.add('is-enhanced'); // yerel dosya düğmesi gizlenir, kutunun kendisi seçtirir
+
+    var mb = function (n) { return (n / 1048576).toFixed(1).replace('.', ',') + ' MB'; };
+
+    var render = function () {
+      list.innerHTML = '';
+      picked.forEach(function (f) {
+        var li = document.createElement('li');
+        li.textContent = f.name + ' · ' + mb(f.size);
+        if (max && f.size > max) { li.className = 'is-err'; li.textContent += ' — çok büyük, atlanacak'; }
+        f._li = li;
+        list.appendChild(li);
+      });
+      list.hidden = !picked.length;
+      status.textContent = picked.length ? picked.length + ' fotoğraf seçildi.' : '';
+    };
+
+    var take = function (files) {
+      picked = Array.prototype.filter.call(files, function (f) { return /^image\//.test(f.type); });
+      render();
+    };
+
+    input.addEventListener('change', function () { take(input.files); });
+    ['dragenter', 'dragover'].forEach(function (ev) {
+      drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.add('is-over'); });
+    });
+    ['dragleave', 'drop'].forEach(function (ev) {
+      drop.addEventListener(ev, function (e) { e.preventDefault(); drop.classList.remove('is-over'); });
+    });
+    drop.addEventListener('drop', function (e) { if (e.dataTransfer) { take(e.dataTransfer.files); } });
+
+    bulk.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!picked.length) { status.textContent = 'Önce fotoğraf seçin.'; return; }
+      submit.disabled = true;
+      input.disabled = true;
+      var token = bulk.querySelector('input[name="_token"]').value;
+      var url = bulk.getAttribute('action') + (bulk.getAttribute('action').indexOf('?') < 0 ? '?' : '&') + 'json=1';
+      var ok = 0, fail = 0, i = 0;
+
+      var next = function () {
+        if (i >= picked.length) {
+          status.textContent = ok + ' fotoğraf eklendi' + (fail ? ', ' + fail + ' eklenemedi.' : '.');
+          if (!fail) { window.location.href = bulk.dataset.done; return; }
+          submit.disabled = false;
+          input.disabled = false;
+          var back = document.createElement('a');
+          back.className = 'btn btn--ghost';
+          back.href = bulk.dataset.done;
+          back.textContent = 'Galeriye dön';
+          status.appendChild(document.createTextNode(' '));
+          status.appendChild(back);
+          return;
+        }
+        var f = picked[i++];
+        status.textContent = i + ' / ' + picked.length + ' yükleniyor…';
+        if (max && f.size > max) { fail++; next(); return; }
+        f._li.className = 'is-busy';
+        var fd = new FormData();
+        fd.append('_token', token);
+        fd.append('images[]', f, f.name);
+        fetch(url, { method: 'POST', body: fd, credentials: 'same-origin' })
+          .then(function (r) { return r.json().catch(function () { return { ok: false, errors: ['Sunucu hatası (' + r.status + ')'] }; }); })
+          .then(function (j) {
+            if (j.ok && j.added) { ok++; f._li.className = 'is-ok'; f._li.textContent = f.name + ' — eklendi'; }
+            else { fail++; f._li.className = 'is-err'; f._li.textContent = (j.errors && j.errors[0]) || (f.name + ' — eklenemedi'); }
+          })
+          .catch(function () { fail++; f._li.className = 'is-err'; f._li.textContent = f.name + ' — bağlantı hatası'; })
+          .then(next);
+      };
+      next();
+    });
+  }
 })();

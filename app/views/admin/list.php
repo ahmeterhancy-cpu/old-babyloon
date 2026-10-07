@@ -51,6 +51,9 @@ if ($groupBy) {
 
 <div class="toolbar">
   <a class="btn" href="<?= e(admin_url("kaynak/$key/yeni")) ?>">+ Yeni ekle</a>
+  <?php if (!empty($res['bulk_upload'])): ?>
+  <a class="btn btn--ghost" href="<?= e(admin_url("kaynak/$key/toplu-yukle")) ?>">Toplu yükle</a>
+  <?php endif; ?>
   <span class="toolbar__count"><?= count($rows) ?> kayıt</span>
 </div>
 

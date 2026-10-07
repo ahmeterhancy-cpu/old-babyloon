@@ -167,6 +167,7 @@ function admin_resource(array $seg): void
         'sil'   => admin_res_delete($key, $res, (int) ($seg[2] ?? 0)),
         'sirala' => admin_res_sort($key, $res),
         'toplu-sil' => admin_res_bulk_delete($key, $res),
+        'toplu-yukle' => isset($res['bulk_upload']) ? admin_res_bulk_upload($key, $res) : admin_abort404(),
         default => admin_abort404(),
     };
 }
@@ -294,6 +295,74 @@ function admin_res_bulk_delete(string $key, array $res): void
 
     flash($silinen . ' kayıt silindi.');
     redirect(admin_url("kaynak/$key/liste"));
+}
+
+/**
+ * Birden çok fotoğrafı tek seferde ekler (galeri).
+ *
+ * Sunucunun POST boyutu ve dosya sayısı sınırına takılmamak için panel JS'i
+ * dosyaları TEK TEK gönderir (?json=1) ve ilerlemeyi gösterir. JS kapalıysa
+ * aynı form hepsini birden gönderir; sınırı aşan kısım hata olarak bildirilir.
+ * Her dosya ayrı kayıt olur, sonuna eklenir, yayında açılır; açıklama boş kalır.
+ */
+function admin_res_bulk_upload(string $key, array $res): void
+{
+    $field  = (string) $res['bulk_upload'];
+    $folder = (string) ($res['fields'][$field]['folder'] ?? $key);
+    $json   = isset($_GET['json']);
+
+    if (!is_post()) {
+        admin_render('admin/bulk_upload', [
+            'title'  => 'Toplu yükle — ' . $res['title'],
+            'resKey' => $key,
+            'res'    => $res,
+            'limits' => [
+                'file'  => min((int) cfg('upload_max', 6 * 1024 * 1024), bytes_ini((string) ini_get('upload_max_filesize'))),
+                'count' => (int) ini_get('max_file_uploads') ?: 20,
+            ],
+        ]);
+        return;
+    }
+
+    // POST sınırı aşılınca PHP $_POST'u da boşaltır; csrf_check o zaman anlamsız bir hata verir
+    if (!$_POST && !$_FILES && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+        $msg = 'Gönderilen dosyalar sunucu sınırını aştı. Daha az fotoğrafla tekrar deneyin.';
+        if ($json) { http_response_code(413); header('Content-Type: application/json'); exit(json_encode(['ok' => false, 'errors' => [$msg]], JSON_UNESCAPED_UNICODE)); }
+        flash($msg, 'err');
+        redirect(admin_url("kaynak/$key/toplu-yukle"));
+    }
+    csrf_check();
+
+    // images[] dizisini tek tek dosya kaydına çevir; admin_handle_upload tek dosya bekler
+    $files = [];
+    $in = $_FILES['images'] ?? null;
+    if ($in && is_array($in['name'])) {
+        foreach ($in['name'] as $i => $n) {
+            $files[] = ['name' => $n, 'type' => $in['type'][$i], 'tmp_name' => $in['tmp_name'][$i],
+                        'error' => $in['error'][$i], 'size' => $in['size'][$i]];
+        }
+    }
+
+    $sort = (int) DB::value("SELECT COALESCE(MAX(sort), 0) FROM {$res['table']}", [], 0);
+    $added = 0; $errors = [];
+    foreach ($files as $f) {
+        if (($f['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) { continue; }
+        $_FILES['__toplu'] = $f;
+        $err = null;
+        $path = admin_handle_upload('__toplu', $folder, $err);
+        if (!$path) { $errors[] = $f['name'] . ': ' . ($err ?? 'yüklenemedi'); continue; }
+        DB::insert($res['table'], [$field => $path, 'is_active' => 1, 'sort' => ++$sort]);
+        $added++;
+    }
+    unset($_FILES['__toplu']);
+
+    if ($json) {
+        header('Content-Type: application/json');
+        exit(json_encode(['ok' => $added > 0, 'added' => $added, 'errors' => $errors], JSON_UNESCAPED_UNICODE));
+    }
+    if ($added === 0 && !$errors) { $errors[] = 'Fotoğraf seçilmedi.'; }
+    flash($added . ' fotoğraf eklendi.' . ($errors ? ' Eklenemeyen: ' . implode(' · ', $errors) : ''), $errors && !$added ? 'err' : 'ok');
+    redirect(admin_url($added ? "kaynak/$key/liste" : "kaynak/$key/toplu-yukle"));
 }
 
 /** Sürükleyip bırakma yerine: liste ekranındaki sıra numaralarını topluca kaydeder. */

@@ -128,6 +128,7 @@ function admin_resources(): array
             'table' => 'gallery',
             'order' => 'sort, id',
             'hint'  => 'Galeri sayfasında ve ana sayfanın alt şeridinde görünür.',
+            'bulk_upload' => 'image',   // "Toplu yükle": alan adı, açıklamalar sonradan
             'columns' => ['image' => 'Fotoğraf', 'caption_tr' => 'Açıklama', 'is_active' => 'Yayında', 'sort' => 'Sıra'],
             'fields' => [
                 'image'     => ['type' => 'image', 'label' => 'Fotoğraf', 'folder' => 'gallery', 'required' => true],
