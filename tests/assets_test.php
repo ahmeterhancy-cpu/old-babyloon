@@ -142,5 +142,29 @@ foreach (glob("$root/assets/js/*.js") as $file) {
     $bad ? no("$name — parantez dengesi", implode(', ', $bad)) : ok("$name — parantezler dengeli");
 }
 
+/* ---- 6. Görsel türevleri: paletli PNG'den boş WebP çıkmamalı ------------ */
+/* Canlıda panelden yüklenen 82 ürün fotoğrafının tam boy WebP'si 0 bayt
+   üretilmiş, yüksek çözünürlüklü telefonlar o dosyayı seçince fotoğraf
+   kırık görünmüştü (2026-10-12). */
+echo "Görsel türevleri\n";
+if (!function_exists('imagewebp')) {
+    ok('paletli PNG — WebP desteği yok, atlandı');
+} else {
+    require_once $root . '/app/lib/imagevariants.php';
+    $tmp = sys_get_temp_dir() . '/ob-palet-' . bin2hex(random_bytes(4));
+    mkdir($tmp);
+    $im = imagecreate(500, 400);
+    imagefilledrectangle($im, 0, 0, 499, 399, imagecolorallocate($im, 200, 60, 40));
+    imagepng($im, "$tmp/p.png");
+    image_variants_make("$tmp/p.png");
+    $bos = array_filter(glob("$tmp/p*") ?: [], fn($f) => filesize($f) === 0);
+    $tam = is_file("$tmp/p.webp") && @imagecreatefromwebp("$tmp/p.webp");
+    array_map('unlink', glob("$tmp/*") ?: []);
+    rmdir($tmp);
+    (!$bos && $tam)
+        ? ok('paletli PNG — tam boy WebP dolu ve açılıyor')
+        : no('paletli PNG — tam boy WebP', $bos ? 'boş dosya üretildi' : 'WebP yok ya da açılmıyor');
+}
+
 echo "\n$pass geçti, $fail başarısız.\n";
 exit($fail ? 1 : 0);

@@ -40,7 +40,10 @@ $kaynaklar = array_filter(
 $uretilen = 0; $toplam = 0;
 
 foreach ($kaynaklar as $src) {
-    if ($eksik && glob(preg_replace('~\.(jpe?g|png)$~i', '', $src) . '@*.jpg')) { continue; }
+    // Tam boy WebP'si boş ya da eksik kalmış kaynak atlanmaz: onarılsın
+    $tb = preg_replace('~\.(jpe?g|png)$~i', '', $src);
+    $webpTamam = !function_exists('imagewebp') || image_variant_var("$tb.webp");
+    if ($eksik && $webpTamam && glob("$tb@*.jpg")) { continue; }
     $n = image_variants_make($src, $genislikler);
     $uretilen += $n;
 

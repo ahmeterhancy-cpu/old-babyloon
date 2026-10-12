@@ -183,7 +183,7 @@
     };
 
     var take = function (files) {
-      picked = Array.prototype.filter.call(files, function (f) { return /^image\//.test(f.type); });
+      picked = Array.prototype.filter.call(files, function (f) { return f.type.indexOf('image/') === 0; });
       render();
     };
 

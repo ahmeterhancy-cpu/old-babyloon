@@ -52,6 +52,15 @@ function image_variants_make(string $abs, ?array $widths = null): int
     };
     if (!$im) { return 0; }
 
+    /* Paletli (256 renk) PNG: imagewebp() bunu yazamaz, üstelik "başarılı"
+       dönüp 0 baytlık dosya bırakır — telefon o boş dosyayı seçince
+       fotoğraf kırık görünür. Önce gerçek renge çevrilir. */
+    if (!imageistruecolor($im)) {
+        imagepalettetotruecolor($im);
+        imagealphablending($im, false);
+        imagesavealpha($im, true);
+    }
+
     $taban = preg_replace('~\.(jpe?g|png|webp)$~i', '', $abs);
     $webpVar = function_exists('imagewebp');
     $n = 0;
@@ -65,16 +74,35 @@ function image_variants_make(string $abs, ?array $widths = null): int
         imagesavealpha($t, true);
         imagecopyresampled($t, $im, 0, 0, 0, 0, $hedef, $nh, $w, $h);
 
-        if (@imagejpeg($t, "$taban@$hedef.jpg", 82)) { $n++; }
-        if ($webpVar && @imagewebp($t, "$taban@$hedef.webp", 78)) { $n++; }
+        if (image_variant_yaz('jpeg', $t, "$taban@$hedef.jpg", 82)) { $n++; }
+        if ($webpVar && image_variant_yaz('webp', $t, "$taban@$hedef.webp", 78)) { $n++; }
         unset($t);
     }
 
     // Tam boyun WebP karşılığı
-    if ($webpVar && @imagewebp($im, "$taban.webp", 78)) { $n++; }
+    if ($webpVar && image_variant_yaz('webp', $im, "$taban.webp", 78)) { $n++; }
 
     unset($im);
     return $n;
+}
+
+/**
+ * Bir türevi yazar; yazılamayan ya da boş çıkan dosyayı geride bırakmaz.
+ * GD'nin dönüş değerine güvenilmez: boş dosya yazıp true dönebiliyor.
+ */
+function image_variant_yaz(string $tur, \GdImage $im, string $hedef, int $kalite): bool
+{
+    $ok = $tur === 'webp' ? @imagewebp($im, $hedef, $kalite) : @imagejpeg($im, $hedef, $kalite);
+    clearstatcache(true, $hedef);
+    if ($ok && is_file($hedef) && filesize($hedef) > 0) { return true; }
+    if (is_file($hedef)) { @unlink($hedef); }
+    return false;
+}
+
+/** Türev dosyası var ve içi dolu mu? Boş dosya tarayıcıya verilmez. */
+function image_variant_var(string $yol): bool
+{
+    return is_file($yol) && filesize($yol) > 0;
 }
 
 /**

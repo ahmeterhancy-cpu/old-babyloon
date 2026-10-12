@@ -423,6 +423,12 @@ function abort404(): never
     exit;
 }
 
+/** Türev dosyası var ve içi dolu mu? 0 baytlık (bozuk üretilmiş) dosya tarayıcıya verilmez. */
+function img_variant_ok(string $yol): bool
+{
+    return is_file($yol) && filesize($yol) > 0;
+}
+
 /**
  * Duyarlı görsel etiketi.
  *
@@ -449,7 +455,7 @@ function img_responsive(string $path, array $ozellik = [], string $sizes = '100v
        Kaynak zaten küçükse genişlik türevi üretilmez ama WebP kopyası
        yine de vardır; o durumda da <picture> kurulmalı. */
     $turevler = glob(OB_ROOT . '/' . $taban . '@*.jpg') ?: [];
-    $tamWebpVar = is_file(OB_ROOT . '/' . $taban . '.webp');
+    $tamWebpVar = img_variant_ok(OB_ROOT . '/' . $taban . '.webp');
     if ((!$turevler && !$tamWebpVar) || !is_file($tam)) {
         return '<img src="' . e(asset($rel)) . '"' . $nitelik . '>';
     }
@@ -461,13 +467,13 @@ function img_responsive(string $path, array $ozellik = [], string $sizes = '100v
         $w = (int) $m[1];
         $jpg[$w] = asset($taban . '@' . $w . '.jpg') . ' ' . $w . 'w';
         $wp = OB_ROOT . '/' . $taban . '@' . $w . '.webp';
-        if (is_file($wp)) { $webp[$w] = asset($taban . '@' . $w . '.webp') . ' ' . $w . 'w'; }
+        if (img_variant_ok($wp)) { $webp[$w] = asset($taban . '@' . $w . '.webp') . ' ' . $w . 'w'; }
     }
     // En büyük boy olarak kaynağın kendisi
     if ($boy) {
         $jpg[$boy[0]] = asset($rel) . ' ' . $boy[0] . 'w';
         $tamWebp = OB_ROOT . '/' . $taban . '.webp';
-        if (is_file($tamWebp)) { $webp[$boy[0]] = asset($taban . '.webp') . ' ' . $boy[0] . 'w'; }
+        if (img_variant_ok($tamWebp)) { $webp[$boy[0]] = asset($taban . '.webp') . ' ' . $boy[0] . 'w'; }
     }
     ksort($jpg); ksort($webp);
 
